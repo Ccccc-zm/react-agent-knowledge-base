@@ -1,0 +1,56 @@
+services:
+  # 1. Chroma 向量数据库服务
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: agent_chroma
+    ports:
+      - "8001:8000"          # 将容器的8000端口映射到主机的8001，避免与 FastAPI 冲突
+    volumes:
+      - ./chroma_db:/chroma/chroma   # 持久化向量数据到本地 chroma_db 目录
+    environment:
+      - IS_PERSISTENT=TRUE
+    restart: unless-stopped
+
+  # 2. FastAPI 服务
+  fastapi:
+    build: .
+    container_name: agent_fastapi
+    command: python api_server.py
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data               # 挂载知识库数据目录
+      - ./logs:/app/logs               # 挂载日志目录
+      - ./config:/app/config           # 挂载配置文件
+      - ./prompts:/app/prompts         # 挂载提示词目录
+    env_file:
+      - .env                           # 注入环境变量
+    environment:
+      - CHROMA_HOST=chroma             # 指定 Chroma 服务的主机名（docker-compose 服务名即主机名）
+      - CHROMA_PORT=8000
+    depends_on:
+      - chroma
+    restart: unless-stopped
+
+  # 3. Streamlit 服务
+  streamlit:
+    build: .
+    container_name: agent_streamlit
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+      - ./prompts:/app/prompts
+      - ./chat_history.db:/app/chat_history.db   # 持久化 SQLite 对话历史
+    env_file:
+      - .env
+    environment:
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
+    depends_on:
+      - chroma
+      - fastapi        # 可选，确保 FastAPI 也启动
+    restart: unless-stopped

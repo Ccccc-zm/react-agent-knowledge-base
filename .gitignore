@@ -1,0 +1,53 @@
+# 虚拟环境目录（整个忽略）
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# 环境变量文件（保护密钥）
+.env
+.env.local
+.env.*.local
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 分发/打包
+dist/
+build/
+*.egg-info/
+*.egg
+
+# 单元测试缓存
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 向量数据库持久化文件（体积大，本地重建即可）
+chroma_db/
+
+# 日志文件
+logs/
+*.log
+
+# IDE 配置（根据团队习惯可选保留）
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 操作系统临时文件
+.DS_Store
+Thumbs.db
+
+# 项目特定临时文件
+md5.text
+*.tmp
+
+# 数据库
+chat_history.db

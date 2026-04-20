@@ -1,0 +1,24 @@
+#collection_name: agent
+#persist_directory: chroma_db
+#k: 3
+#data_path: data
+#md5_hex_store: md5.text
+#allow_knowledge_file_type: ["txt", "pdf"]
+#
+#chunk_size: 200
+#chunk_overlap: 20
+#separators: ["\n\n", "\n", ".", "!", "?", "。", "！", "？", " ", ""]
+
+collection_name: "knowledge_base"
+persist_directory: "/app/chroma_db"          # 容器内路径，实际数据通过 volume 持久化
+data_path: "data"
+allow_knowledge_file_type: [".pdf", ".txt"]
+chunk_size: 200
+chunk_overlap: 20
+separators: ["\n\n", "\n", ".", "!", "?", "。", "！", "？", " ", ""]
+k: 3
+md5_hex_store: "config/md5_records.txt"
+
+# Chroma 服务连接配置（Docker 环境下使用）
+chroma_host: ${CHROMA_HOST:-localhost}
+chroma_port: ${CHROMA_PORT:-8000}

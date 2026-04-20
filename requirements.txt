@@ -1,0 +1,28 @@
+# 核心框架
+langchain>=0.3.0
+langchain-community>=0.3.0
+langgraph>=0.2.0
+langchain-chroma>=0.2.0
+
+# 大模型与嵌入
+dashscope>=1.20.0
+
+# PDF 解析
+pypdf>=5.0.0
+
+# Web 框架
+streamlit>=1.40.0
+fastapi>=0.115.0
+uvicorn>=0.30.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
+
+# 配置解析
+pyyaml>=6.0
+
+# 向量数据库（Chroma 自带，但显式声明版本）
+chromadb>=0.5.0
+
+# HTTP 请求（接入真实 API）
+requests>=2.32.0
